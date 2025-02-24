@@ -1,12 +1,12 @@
 #include "wifi_board.h"
 #include "audio_codecs/es8311_audio_codec.h"
 #include "display/lcd_display.h"
-#include "display/no_display.h"
 #include "application.h"
 #include "button.h"
 #include "config.h"
 #include "i2c_device.h"
 #include "iot/thing_manager.h"
+#include "assets/lang_config.h"
 
 #include <esp_log.h>
 #include <driver/i2c_master.h>
@@ -110,9 +110,9 @@ private:
         InitializeSpi();
         InitializeGc9107Display();
         InitializeButtons();
-        display_->SetStatus("错误");
+        display_->SetStatus(Lang::Strings::ERROR);
         display_->SetEmotion("sad");
-        display_->SetChatMessage("", "Echo Base\n未连接");
+        display_->SetChatMessage("system", "Echo Base\nnot connected");
         
         while (1) {
             ESP_LOGE(TAG, "Atomic Echo Base is disconnected");
@@ -167,7 +167,7 @@ private:
         };
         esp_lcd_panel_dev_config_t panel_config = {};
         panel_config.reset_gpio_num = GPIO_NUM_34; // Set to -1 if not use
-        panel_config.rgb_endian = LCD_RGB_ENDIAN_RGB;
+        panel_config.rgb_endian = LCD_RGB_ENDIAN_BGR;
         panel_config.bits_per_pixel = 16; // Implemented by LCD command `3Ah` (16/18)
         panel_config.vendor_config = &gc9107_vendor_config;
 
